@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Определение геолокации</title>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(redirectToForm, showError);
+            } else {
+                alert("Ваш браузер не поддерживает геолокацию.");
+            }
+        }
+
+        function redirectToForm(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var geoData = latitude + ", " + longitude;
+            
+            var formURL = "https://docs.google.com/forms/d/e/1Iym9UBDXchr08R5_sEN2LhqGlhGoFPXrY9hidP82B4Q/viewform?usp=pp_url&entry.234151457=" + encodeURIComponent(geoData);
+            
+            window.location.href = formURL;
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Вы запретили доступ к геолокации.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Информация о местоположении недоступна.");
+                    break;
+                case error.TIMEOUT:
+                    alert("Время ожидания истекло.");
+                    break;
+                default:
+                    alert("Произошла неизвестная ошибка.");
+                    break;
+            }
+        }
+    </script>
+</head>
+<body onload="getLocation()">
+    <h2>Определяем ваше местоположение...</h2>
+</body>
+</html>
