@@ -3,45 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Определение геолокации</title>
+    <title>Подготавливаем форму</title>
     <script>
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(redirectToForm, showError);
+                navigator.geolocation.getCurrentPosition(success, error);
             } else {
-                alert("Ваш браузер не поддерживает геолокацию.");
+                alert("Геолокация не поддерживается вашим браузером.");
             }
         }
 
-        function redirectToForm(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            var geoData = latitude + ", " + longitude;
+        function success(position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let mapLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
             
-            var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdzeLcCK7V9EOe7lgnvZbzvyaO3JRktVYQN8U0KNihrwmZ7bw/viewform?usp=pp_url&entry.1922192372=" + encodeURIComponent(geoData);
+            let formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdzeLcCK7V9EOe7lgnvZbzvyaO3JRktVYQN8U0KNihrwmZ7bw/viewform?usp=pp_url"
+                        + "&entry.1922192372=" + encodeURIComponent(mapLink);
             
-            window.location.href = formURL;
+            window.location.href = formUrl;
         }
 
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("Вы запретили доступ к геолокации.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Информация о местоположении недоступна.");
-                    break;
-                case error.TIMEOUT:
-                    alert("Время ожидания истекло.");
-                    break;
-                default:
-                    alert("Произошла неизвестная ошибка.");
-                    break;
-            }
+        function error() {
+            alert("Не удалось получить геопозицию.");
         }
+
+        window.onload = getLocation;
     </script>
 </head>
-<body onload="getLocation()">
-    <h2>Определяем ваше местоположение...</h2>
+<body>
+    <h2>Подготавливаем форму...</h2>
 </body>
 </html>
